@@ -1,0 +1,29 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
+class ProductServicePermissionSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $adminRole = Role::findByName('Administrator');
+        $operations = ['create', 'view', 'edit', 'delete'];
+        $modules = ['products', 'services'];
+
+        foreach($modules as $m) {
+            foreach($operations as $op) {
+                $newPermission = Permission::create(['name' => $op . ' ' . $m]);
+                $newPermission->assignRole($adminRole);
+            }
+        }
+    }
+}
